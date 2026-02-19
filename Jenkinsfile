@@ -38,9 +38,13 @@ pipeline {
 
     }
 
-    post {
-        success {
-            echo 'Pipeline executed successfully. NGINX load balancer is running.'
-        }
+   post {
+    success {
+        echo "Pipeline executed successfully. NGINX load balancer is running."
     }
+    failure {
+        echo "Pipeline failed. Check logs."
+    }
+}
+
 }
