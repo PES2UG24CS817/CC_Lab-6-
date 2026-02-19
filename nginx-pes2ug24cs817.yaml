@@ -1,21 +1,16 @@
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: nginx-pes2ug24cs817
-spec:
-  replicas: 3
-  selector:
-    matchLabels:
-      app: nginx
-  template:
-    metadata:
-      labels:
-        app: nginx
-    spec:
-      containers:
-      - name: nginx
-        image: pes2ug24cs817-nginx:1.0
-        imagePullPolicy: Never
-        ports:
-        - containerPort: 80
+events {}
 
+http {
+    upstream backend_servers {
+        server backend1:80;
+        server backend2:80;
+    }
+
+    server {
+        listen 80;
+
+        location / {
+            proxy_pass http://backend_servers;
+        }
+    }
+}
