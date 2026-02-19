@@ -22,15 +22,20 @@ pipeline {
 }
 
         stage('Deploy NGINX Load Balancer') {
-            steps {
-                sh '''
-                docker rm -f nginx-lb || true
-                docker run -d --name nginx-lb -p 80:80 nginx
-                docker cp nginx-pes2ug24cs817.yaml nginx-lb:/etc/nginx/nginx.conf
-                docker exec nginx-lb nginx -s reload
-                '''
-            }
-        }
+    steps {
+        sh '''
+        docker rm -f nginx-lb || true
+
+        docker run -d --name nginx-lb \
+          --network lab6-net \
+          -p 80:80 nginx
+
+        docker cp nginx-pes2ug24cs817.yaml nginx-lb:/etc/nginx/nginx.conf
+        docker exec nginx-lb nginx -s reload
+        '''
+    }
+}
+
     }
 
     post {
